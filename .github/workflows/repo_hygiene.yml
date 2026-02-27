@@ -1,0 +1,67 @@
+# Repo hygiene: ensure no generated folders are committed and dependency files exist.
+name: Repo hygiene
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Check for excluded directories
+        run: |
+          EXCLUDED=""
+          for dir in Library Temp Obj; do
+            if [ -d "$dir" ]; then
+              EXCLUDED="${EXCLUDED} $dir"
+            fi
+          done
+          if [ -n "$EXCLUDED" ]; then
+            echo "::error::These directories must not be committed (add to .gitignore):$EXCLUDED"
+            exit 1
+          fi
+          echo "No Library/, Temp/, or Obj/ in repo - OK"
+
+      - name: Check Packages manifest and lock
+        run: |
+          if [ ! -f Packages/manifest.json ]; then
+            echo "::error::Packages/manifest.json is missing"
+            exit 1
+          fi
+          if [ ! -f Packages/packages-lock.json ]; then
+            echo "::warning::Packages/packages-lock.json is missing - commit it for deterministic restore"
+          fi
+          echo "Packages manifest (and lock) present - OK"
+
+      - name: Check ProjectSettings
+        run: |
+          if [ ! -d ProjectSettings ]; then
+            echo "::error::ProjectSettings/ is missing"
+            exit 1
+          fi
+          if [ ! -f ProjectSettings/ProjectVersion.txt ]; then
+            echo "::error::ProjectSettings/ProjectVersion.txt is missing"
+            exit 1
+          fi
+          echo "ProjectSettings present - OK"
+
+      - name: Git LFS and large binaries (warn only)
+        run: |
+          if ! git lfs env | grep -q "git config filter.lfs"; then
+            echo "::warning::Git LFS may not be configured for this repo"
+          fi
+          # Warn if large non-LFS files appear (heuristic: >1MB)
+          BIG=$(find . -type f -size +1M -not -path "./.git/*" 2>/dev/null | head -5)
+          if [ -n "$BIG" ]; then
+            echo "::warning::Some large files found - ensure binary types are in .gitattributes with filter=lfs"
+            echo "$BIG"
+          fi
+          echo "LFS check done"
