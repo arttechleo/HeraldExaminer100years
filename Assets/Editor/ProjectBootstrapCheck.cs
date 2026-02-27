@@ -7,7 +7,6 @@ using UnityEngine;
 /// Runs on Unity load to validate project bootstrap: Unity version, required packages,
 /// Android build settings, and required assets. Shows a dialog with fix steps if something is wrong.
 /// </summary>
-[InitializeOnLoadMethod]
 public static class ProjectBootstrapCheck
 {
     private const string ExpectedUnityVersion = "6000.2.15f1";
@@ -35,7 +34,8 @@ public static class ProjectBootstrapCheck
         "Assets/Scripts/ObjectDetectionVisualizerV2.cs"
     };
 
-    static ProjectBootstrapCheck()
+    [InitializeOnLoadMethod]
+    private static void OnEditorLoad()
     {
         EditorApplication.delayCall += RunCheck;
     }
