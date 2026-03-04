@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f10904b4b7afe154f92491a9215bb4d2, type: 3}
+  m_Name: EraConfig
+  m_EditorClassIdentifier: Assembly-CSharp::TemporalEraConfig
+  defaultEra: 0
+  mappings:
+  - category: 1
+    displayName: 
+    era1920s:
+      prefab: {fileID: 2306257851093139570, guid: af5030f8440427541a01dad997fee28c, type: 3}
+      localPositionOffset: {x: 0, y: 0, z: 0}
+      localRotationEuler: {x: 270, y: 90, z: 270}
+      scaleMultiplier: 1
+      overrideMicPrefab: 0
+      micPrefabOverride: {fileID: 0}
+      overrideMicOffset: 0
+      micOffsetOverride: {x: 0, y: 0, z: 0}
+      microphoneClip: {fileID: 0}
+      appearBlendSeconds: 0
+      displayLabel: 
+    era1960s:
+      prefab: {fileID: 6300393541625823580, guid: be023d82447f99245910cf184208a355, type: 3}
+      localPositionOffset: {x: 0, y: 0, z: 0}
+      localRotationEuler: {x: 0, y: 0, z: 0}
+      scaleMultiplier: 1
+      overrideMicPrefab: 0
+      micPrefabOverride: {fileID: 0}
+      overrideMicOffset: 0
+      micOffsetOverride: {x: 0, y: 0, z: 0}
+      microphoneClip: {fileID: 0}
+      appearBlendSeconds: 0
+      displayLabel: 
+    eraToday:
+      prefab: {fileID: 1756274626172319011, guid: fd8715fa35faf6a45a2517d6981c4df0, type: 3}
+      localPositionOffset: {x: 0, y: 0, z: 0}
+      localRotationEuler: {x: 0, y: 0, z: 0}
+      scaleMultiplier: 1
+      overrideMicPrefab: 0
+      micPrefabOverride: {fileID: 0}
+      overrideMicOffset: 0
+      micOffsetOverride: {x: 0, y: 0, z: 0}
+      microphoneClip: {fileID: 0}
+      appearBlendSeconds: 0
+      displayLabel: 
+  defaultMicrophonePrefab: {fileID: 919132149155446097, guid: f60eecc481e75364ba6c5777e6765477, type: 3}
+  defaultMicrophoneLocalOffset: {x: 0.25, y: 0.1, z: 0}
+  defaultScaleMultiplier: 1
+  includeHumanCategoryInConfig: 0
+  ambience1920s: {fileID: 0}
+  ambience1960s: {fileID: 0}
+  ambienceToday: {fileID: 0}

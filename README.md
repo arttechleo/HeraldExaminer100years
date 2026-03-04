@@ -2,6 +2,38 @@
 
 Unity Mixed Reality project for Meta Quest. AI object detection overlays (typewriters on screens, newspaper on books, hats on humans) with detection-based prefab placement.
 
+---
+
+## RCOverlayStory Demo – Setup
+
+**Unity version:** **6000.2.15f1** (Unity Hub → Add → select this exact version)
+
+**Required packages (from `Packages/manifest.json`):**
+- Meta XR MR Utility Kit (com.meta.xr.mrutilitykit)
+- Meta OpenXR (com.unity.xr.meta-openxr)
+- Unity AI Inference (com.unity.ai.inference)
+- URP (com.unity.render-pipelines.universal)
+
+**Android build requirements:**
+- Platform: Android
+- Scripting Backend: IL2CPP
+- Target Architectures: ARM64
+- Minimum API Level: 29
+- OpenXR feature groups: Oculus Quest, Oculus Quest 2, Meta Quest 3
+
+**Demo entry scene:** `Assets/Scenes/AIBuildingBlocks.unity`
+
+**One-click setup (run once after opening the scene):**
+1. Open `Assets/Scenes/AIBuildingBlocks.unity`
+2. **Tools → Temporal Echo → Setup Full Runtime (Meta XR)**
+3. Enter Play mode
+
+**How to Test:**
+- **Headset:** Build for Android (Quest), deploy via Build & Run. Point at screens, books, people; overlays spawn; tap era buttons (1920s / 1960s / 2026).
+- **Editor:** Open AIBuildingBlocks scene → Play. Use XR Simulation (Meta XR) or Link; detection may run at reduced rate. Era UI panel floats in front; switch eras to change overlays and media.
+
+---
+
 ## Unity version
 
 **6000.2.15f1** (see `ProjectSettings/ProjectVersion.txt`)
@@ -33,7 +65,7 @@ The script will:
 2. Run **`git lfs pull`** to download LFS-tracked assets.
 3. Print instructions to open the project in Unity Hub (**Add → Add project from disk** → select this folder).
 
-Then open the project in Unity and use scene `Assets/Scenes/AIBuildingBlocks.unity`. On first load, the **Project Bootstrap Check** (Editor script) may show a dialog if Unity version, packages, or Android settings need attention; follow the steps it suggests.
+Then open the project in Unity and use scene `Assets/Scenes/AIBuildingBlocks.unity`. Run **Tools → Temporal Echo → Setup Full Runtime (Meta XR)** to wire the demo.
 
 ## Requirements
 

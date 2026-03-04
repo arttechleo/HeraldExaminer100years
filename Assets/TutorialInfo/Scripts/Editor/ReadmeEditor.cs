@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -7,7 +7,6 @@ using System.IO;
 using System.Reflection;
 
 [CustomEditor(typeof(Readme))]
-[InitializeOnLoad]
 public class ReadmeEditor : Editor
 {
     static string s_ShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
@@ -16,10 +15,8 @@ public class ReadmeEditor : Editor
 
     const float k_Space = 16f;
 
-    static ReadmeEditor()
-    {
-        EditorApplication.delayCall += SelectReadmeAutomatically;
-    }
+    // Removed [InitializeOnLoad] and delayCall: auto-select on load caused "Assertion failed on expression: 'false'"
+    // in EditorApplication.Internal_CallDelayFunctions. Open the Readme asset manually if needed.
 
     static void RemoveTutorial()
     {
@@ -51,19 +48,10 @@ public class ReadmeEditor : Editor
         }
     }
 
+    /// <summary>Intentionally a no-op. Do not call from EditorApplication.delayCall — causes "Assertion failed on expression: 'false'" in Internal_CallDelayFunctions. Open Readme manually.</summary>
     static void SelectReadmeAutomatically()
     {
-        if (!SessionState.GetBool(s_ShowedReadmeSessionStateName, false))
-        {
-            var readme = SelectReadme();
-            SessionState.SetBool(s_ShowedReadmeSessionStateName, true);
-
-            if (readme && !readme.loadedLayout)
-            {
-                LoadLayout();
-                readme.loadedLayout = true;
-            }
-        }
+        // Disabled: setting Selection.objects / LoadLayout from delayCall triggers editor assertion.
     }
 
     static void LoadLayout()
