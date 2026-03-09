@@ -4,12 +4,19 @@ using Meta.XR;
 using Meta.XR.BuildingBlocks.AIBlocks;
 using Meta.XR.EnvironmentDepth;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(ObjectDetectionAgent), typeof(DepthTextureAccess), typeof(EnvironmentDepthManager))]
 public class ObjectDetectionVisualizerV2 : MonoBehaviour
 {
     [SerializeField] private GameObject boundingBoxPrefab;
+    [Tooltip("Main control for demo visibility. Tick = show bounding boxes and text when AI detects a subject. Untick = hide.")]
     [SerializeField] private bool showBoundingBoxes = true;
+
+    [Header("Optional UI")]
+    [Tooltip("Assign a UI Button (e.g. under MR_OverlayCanvas) to toggle Show Bounding Boxes on click. Button text will update to \"Show Boxes\" or \"Hide Boxes\".")]
+    [SerializeField] private Button optionalToggleButton;
 
     /// <summary>
     /// Global toggle for all currently spawned and future bounding‑box renderers.
@@ -29,6 +36,7 @@ public class ObjectDetectionVisualizerV2 : MonoBehaviour
                 foreach (var r in rc.Renderers)
                     r.enabled = value;
             }
+            UpdateOptionalButtonLabel();
         }
     }
 
@@ -42,6 +50,21 @@ public class ObjectDetectionVisualizerV2 : MonoBehaviour
     /// Convenience wrapper for runtime UI (e.g. Toggle.onValueChanged).
     /// </summary>
     public void SetShowBoundingBoxes(bool value) => ShowBoundingBoxes = value;
+
+    /// <summary>
+    /// Toggles Show Bounding Boxes. Call from Button.onClick or other UI.
+    /// </summary>
+    public void ToggleShowBoundingBoxes() => ShowBoundingBoxes = !showBoundingBoxes;
+
+    private void UpdateOptionalButtonLabel()
+    {
+        if (optionalToggleButton == null) return;
+        string label = showBoundingBoxes ? "Hide Boxes" : "Show Boxes";
+        var tmpText = optionalToggleButton.GetComponentInChildren<TMP_Text>(true);
+        if (tmpText != null) { tmpText.text = label; return; }
+        var uiText = optionalToggleButton.GetComponentInChildren<Text>(true);
+        if (uiText != null) uiText.text = label;
+    }
 
     private ObjectDetectionAgent _agent;
     private readonly List<GameObject> _live = new();
@@ -67,6 +90,12 @@ public class ObjectDetectionVisualizerV2 : MonoBehaviour
         _cam = FindAnyObjectByType<PassthroughCameraAccess>();
         _depth = GetComponent<DepthTextureAccess>();
         _eyeIdx = _cam.CameraPosition == PassthroughCameraAccess.CameraPositionType.Left ? 0 : 1;
+
+        if (optionalToggleButton != null)
+        {
+            optionalToggleButton.onClick.AddListener(ToggleShowBoundingBoxes);
+            UpdateOptionalButtonLabel();
+        }
     }
     
     private void OnEnable()

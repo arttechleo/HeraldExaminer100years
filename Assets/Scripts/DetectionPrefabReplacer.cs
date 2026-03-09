@@ -288,12 +288,9 @@ public class DetectionPrefabReplacer : MonoBehaviour
         _cam = FindAnyObjectByType<PassthroughCameraAccess>();
         _depth = GetComponent<DepthTextureAccess>();
         _resolveInterval = 1f / Mathf.Max(0.5f, resolveHz);
-        if (!showRecognitionText)
-        {
-            var visualizer = FindAnyObjectByType<ObjectDetectionVisualizerV2>();
-            if (visualizer != null)
-                visualizer.enabled = false;
-        }
+        // Do not disable ObjectDetectionVisualizerV2 — it stays enabled so it can receive detections
+        // and show/hide boxes via its Show Bounding Boxes checkbox. Use DisableDetectionVisualizerOnStart
+        // or ObjectDetectionVisualizerV2.Show Bounding Boxes for initial visibility.
 
         if (xrCameraTransform == null)
         {
